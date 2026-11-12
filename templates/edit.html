@@ -1,0 +1,1468 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Edit Contacts</title>
+
+    {% load static %}
+
+    <link rel="stylesheet"
+        href="{% static 'assets/vendor/bootstrap/css/bootstrap.min.css' %}">
+
+    <script src="{% static 'assets/vendor/bootstrap/js/bootstrap.min.js' %}"></script>
+
+    <style>
+
+        /* =========================================================
+           ROOT
+        ========================================================= */
+
+        :root {
+            --primary: #6366f1;
+            --primary-dark: #4f46e5;
+            --secondary: #8b5cf6;
+
+            --bg: #f6f7ff;
+            --card: #ffffff;
+
+            --text: #111827;
+            --muted: #64748b;
+
+            --border: #e2e8f0;
+
+            --success: #10b981;
+            --danger: #ef4444;
+
+            --shadow:
+                0 20px 60px rgba(30, 41, 59, 0.08);
+        }
+
+
+        * {
+            box-sizing: border-box;
+        }
+
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+
+        body {
+            margin: 0;
+
+            min-height: 100vh;
+
+            background:
+                radial-gradient(
+                    circle at 10% 10%,
+                    rgba(99, 102, 241, .12),
+                    transparent 25%
+                ),
+                radial-gradient(
+                    circle at 90% 20%,
+                    rgba(139, 92, 246, .10),
+                    transparent 25%
+                ),
+                linear-gradient(
+                    135deg,
+                    #f8f9ff,
+                    #f4f6ff
+                );
+
+            color: var(--text);
+
+            font-family:
+                Inter,
+                -apple-system,
+                BlinkMacSystemFont,
+                "Segoe UI",
+                sans-serif;
+
+            overflow-x: hidden;
+        }
+
+
+        /* =========================================================
+           BACKGROUND DECORATION
+        ========================================================= */
+
+        .orb {
+            position: fixed;
+
+            width: 250px;
+            height: 250px;
+
+            border-radius: 50%;
+
+            filter: blur(70px);
+
+            opacity: .18;
+
+            pointer-events: none;
+
+            z-index: -1;
+        }
+
+
+        .orb-one {
+            top: 120px;
+            left: -100px;
+
+            background: #6366f1;
+        }
+
+
+        .orb-two {
+            right: -100px;
+            bottom: 50px;
+
+            background: #8b5cf6;
+        }
+
+
+        /* =========================================================
+           NAVIGATION
+        ========================================================= */
+
+        .topbar {
+            height: 72px;
+
+            display: flex;
+            align-items: center;
+
+            background: rgba(255,255,255,.75);
+
+            border-bottom:
+                1px solid rgba(226,232,240,.8);
+
+            backdrop-filter: blur(18px);
+            -webkit-backdrop-filter: blur(18px);
+
+            position: sticky;
+            top: 0;
+
+            z-index: 1000;
+        }
+
+
+        .brand {
+            display: flex;
+            align-items: center;
+
+            gap: 11px;
+
+            color: var(--text);
+
+            text-decoration: none;
+
+            font-weight: 750;
+
+            font-size: 18px;
+        }
+
+
+        .brand-icon {
+            width: 42px;
+            height: 42px;
+
+            border-radius: 13px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            color: white;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    var(--primary),
+                    var(--secondary)
+                );
+
+            box-shadow:
+                0 8px 22px rgba(99,102,241,.28);
+
+            transition: .3s ease;
+        }
+
+
+        .brand:hover .brand-icon {
+            transform:
+                rotate(-8deg)
+                scale(1.08);
+        }
+
+
+        /* =========================================================
+           PAGE
+        ========================================================= */
+
+        .page {
+            max-width: 1150px;
+
+            margin: auto;
+
+            padding:
+                45px 20px 70px;
+        }
+
+
+        /* =========================================================
+           HEADER
+        ========================================================= */
+
+        .header {
+            display: flex;
+
+            justify-content: space-between;
+            align-items: center;
+
+            gap: 30px;
+
+            margin-bottom: 30px;
+
+            animation:
+                slideDown .6s ease;
+        }
+
+
+        @keyframes slideDown {
+
+            from {
+                opacity: 0;
+                transform: translateY(-15px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+
+        }
+
+
+        .eyebrow {
+            display: inline-flex;
+
+            align-items: center;
+
+            gap: 8px;
+
+            padding:
+                7px 12px;
+
+            border-radius: 50px;
+
+            background:
+                rgba(99,102,241,.09);
+
+            color: var(--primary);
+
+            font-size: 11px;
+
+            font-weight: 800;
+
+            letter-spacing: .7px;
+        }
+
+
+        .pulse {
+            width: 7px;
+            height: 7px;
+
+            border-radius: 50%;
+
+            background: var(--primary);
+
+            box-shadow:
+                0 0 0 0 rgba(99,102,241,.5);
+
+            animation:
+                pulse 1.8s infinite;
+        }
+
+
+        @keyframes pulse {
+
+            70% {
+                box-shadow:
+                    0 0 0 7px rgba(99,102,241,0);
+            }
+
+            100% {
+                box-shadow:
+                    0 0 0 0 rgba(99,102,241,0);
+            }
+
+        }
+
+
+        .title {
+            margin: 12px 0 7px;
+
+            font-size:
+                clamp(30px,5vw,43px);
+
+            line-height: 1;
+
+            font-weight: 850;
+
+            letter-spacing: -1.5px;
+        }
+
+
+        .description {
+            margin: 0;
+
+            max-width: 620px;
+
+            color: var(--muted);
+
+            line-height: 1.7;
+
+            font-size: 14px;
+        }
+
+
+        /* =========================================================
+           PROGRESS
+        ========================================================= */
+
+        .progress-card {
+            min-width: 180px;
+
+            padding: 17px;
+
+            background: rgba(255,255,255,.85);
+
+            border:
+                1px solid var(--border);
+
+            border-radius: 16px;
+
+            box-shadow: 0 8px 25px rgba(15,23,42,.05);
+        }
+
+
+        .progress-top {
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: center;
+
+            margin-bottom: 9px;
+        }
+
+
+        .progress-label {
+            color: var(--muted);
+
+            font-size: 11px;
+
+            font-weight: 700;
+
+            text-transform: uppercase;
+        }
+
+
+        .progress-number {
+            color: var(--primary);
+
+            font-size: 14px;
+
+            font-weight: 800;
+        }
+
+
+        .progress-track {
+            height: 7px;
+
+            background: #eef2f7;
+
+            border-radius: 50px;
+
+            overflow: hidden;
+        }
+
+
+        .progress-bar-custom {
+            height: 100%;
+
+            width: 0%;
+
+            border-radius: inherit;
+
+            background:
+                linear-gradient(
+                    90deg,
+                    var(--primary),
+                    var(--secondary)
+                );
+
+            transition:
+                width .4s cubic-bezier(.4,0,.2,1);
+        }
+
+
+        /* =========================================================
+           MAIN CARD
+        ========================================================= */
+
+        .form-card {
+            background:
+                rgba(255,255,255,.92);
+
+            border:
+                1px solid rgba(226,232,240,.9);
+
+            border-radius: 24px;
+
+            box-shadow: var(--shadow);
+
+            overflow: hidden;
+
+            animation:
+                cardIn .7s ease .1s both;
+        }
+
+
+        @keyframes cardIn {
+
+            from {
+                opacity: 0;
+                transform:
+                    translateY(25px)
+                    scale(.98);
+            }
+
+            to {
+                opacity: 1;
+                transform:
+                    translateY(0)
+                    scale(1);
+            }
+
+        }
+
+
+        /* =========================================================
+           CARD HEADER
+        ========================================================= */
+
+        .card-header-modern {
+            padding:
+                24px 30px;
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 14px;
+
+            border-bottom:
+                1px solid var(--border);
+        }
+
+
+        .card-icon {
+            width: 48px;
+            height: 48px;
+
+            border-radius: 14px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #eef2ff,
+                    #f5f3ff
+                );
+
+            color: var(--primary);
+
+            font-size: 20px;
+
+            transition: .3s ease;
+        }
+
+
+        .form-card:hover .card-icon {
+            transform:
+                rotate(4deg)
+                scale(1.05);
+        }
+
+
+        .card-title {
+            margin: 0;
+
+            font-size: 17px;
+
+            font-weight: 800;
+        }
+
+
+        .card-subtitle {
+            margin: 4px 0 0;
+
+            color: var(--muted);
+
+            font-size: 12px;
+        }
+
+
+        /* =========================================================
+           FORM
+        ========================================================= */
+
+        .form-body {
+            padding:
+                32px 30px;
+        }
+
+
+        .field {
+            margin-bottom: 24px;
+
+            animation:
+                fieldIn .5s ease both;
+        }
+
+
+        .field:nth-child(1) {
+            animation-delay: .15s;
+        }
+
+
+        .field:nth-child(2) {
+            animation-delay: .2s;
+        }
+
+
+        @keyframes fieldIn {
+
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+
+        }
+
+
+        .label-row {
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: center;
+
+            margin-bottom: 8px;
+        }
+
+
+        .field-label {
+            color: #334155;
+
+            font-size: 12px;
+
+            font-weight: 750;
+
+            text-transform: uppercase;
+
+            letter-spacing: .3px;
+        }
+
+
+        .required {
+            color: var(--danger);
+        }
+
+
+        .field-wrap {
+            position: relative;
+        }
+
+
+        .field-icon {
+            position: absolute;
+
+            left: 15px;
+
+            top: 50%;
+
+            transform: translateY(-50%);
+
+            color: #94a3b8;
+
+            font-size: 16px;
+
+            pointer-events: none;
+
+            transition: .25s ease;
+        }
+
+
+        .modern-input {
+            width: 100%;
+
+            min-height: 51px;
+
+            padding:
+                13px 45px;
+
+            border:
+                1px solid var(--border);
+
+            border-radius: 13px;
+
+            background:
+                rgba(248,250,252,.7);
+
+            color: var(--text);
+
+            font-size: 14px;
+
+            outline: none;
+
+            transition:
+                border .25s ease,
+                box-shadow .25s ease,
+                background .25s ease,
+                transform .25s ease;
+        }
+
+
+        .modern-input:hover {
+            background: white;
+
+            border-color:
+                #cbd5e1;
+        }
+
+
+        .modern-input:focus {
+            background: white;
+
+            border-color:
+                var(--primary);
+
+            box-shadow:
+                0 0 0 4px
+                rgba(99,102,241,.09);
+
+            transform:
+                translateY(-1px);
+        }
+
+
+        .modern-input:focus ~ .field-icon {
+            color: var(--primary);
+
+            transform:
+                translateY(-50%)
+                scale(1.1);
+        }
+
+
+        textarea.modern-input {
+            min-height: 220px;
+
+            resize: vertical;
+
+            line-height: 1.65;
+
+            padding-top: 15px;
+        }
+
+
+        .textarea-icon {
+            top: 22px !important;
+        }
+
+
+        /* =========================================================
+           VALID FIELD
+        ========================================================= */
+
+        .modern-input.valid {
+            border-color:
+                rgba(16,185,129,.55);
+        }
+
+
+        .valid-icon {
+            position: absolute;
+
+            right: 15px;
+
+            top: 50%;
+
+            transform: translateY(-50%);
+
+            color: var(--success);
+
+            opacity: 0;
+
+            transition: .2s ease;
+        }
+
+
+        .modern-input.valid ~ .valid-icon {
+            opacity: 1;
+        }
+
+
+        /* =========================================================
+           MESSAGE COUNTER
+        ========================================================= */
+
+        .field-meta {
+            display: flex;
+
+            justify-content: space-between;
+
+            margin-top: 7px;
+
+            color: #94a3b8;
+
+            font-size: 11px;
+        }
+
+
+        /* =========================================================
+           BOTTOM AREA
+        ========================================================= */
+
+        .form-bottom {
+            margin-top: 5px;
+
+            padding-top: 24px;
+
+            border-top:
+                1px solid var(--border);
+
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: center;
+
+            gap: 20px;
+        }
+
+
+        .save-note {
+            display: flex;
+
+            align-items: center;
+
+            gap: 9px;
+
+            color: var(--muted);
+
+            font-size: 12px;
+        }
+
+
+        .save-check {
+            width: 30px;
+            height: 30px;
+
+            border-radius: 9px;
+
+            background: #ecfdf5;
+
+            color: var(--success);
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+
+        /* =========================================================
+           BUTTON
+        ========================================================= */
+
+        .update-btn {
+            min-width: 155px;
+
+            min-height: 49px;
+
+            padding:
+                12px 22px;
+
+            border: none;
+
+            border-radius: 12px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    var(--primary),
+                    var(--secondary)
+                );
+
+            color: white;
+
+            font-size: 14px;
+
+            font-weight: 750;
+
+            cursor: pointer;
+
+            box-shadow:
+                0 10px 25px
+                rgba(99,102,241,.25);
+
+            transition:
+                transform .2s ease,
+                box-shadow .2s ease;
+        }
+
+
+        .update-btn:hover {
+            transform:
+                translateY(-3px);
+
+            box-shadow:
+                0 15px 30px
+                rgba(99,102,241,.32);
+        }
+
+
+        .update-btn:active {
+            transform:
+                translateY(-1px);
+        }
+
+
+        /* =========================================================
+           STATUS
+        ========================================================= */
+
+        .loading,
+        .error-message,
+        .sent-message {
+            display: none;
+        }
+
+
+        /* =========================================================
+           FOOTER
+        ========================================================= */
+
+        .footer {
+            margin-top: 25px;
+
+            text-align: center;
+
+            color: #94a3b8;
+
+            font-size: 12px;
+        }
+
+
+        /* =========================================================
+           MOBILE
+        ========================================================= */
+
+        @media (max-width: 768px) {
+
+            .topbar {
+                height: 64px;
+            }
+
+
+            .page {
+                padding:
+                    30px 15px 50px;
+            }
+
+
+            .header {
+                align-items: stretch;
+
+                flex-direction: column;
+            }
+
+
+            .progress-card {
+                width: 100%;
+            }
+
+
+            .form-card {
+                border-radius: 18px;
+            }
+
+
+            .card-header-modern {
+                padding: 20px;
+            }
+
+
+            .form-body {
+                padding:
+                    25px 20px;
+            }
+
+
+            .form-bottom {
+                align-items: stretch;
+
+                flex-direction: column;
+            }
+
+
+            .save-note {
+                justify-content: center;
+            }
+
+
+            .update-btn {
+                width: 100%;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<!-- Decorative background -->
+
+<div class="orb orb-one"></div>
+<div class="orb orb-two"></div>
+
+
+<!-- =========================================================
+     NAVBAR
+========================================================= -->
+
+<header class="topbar">
+
+    <div class="container-fluid px-4">
+
+        <div class="brand">
+
+            <div class="brand-icon">
+                ✎
+            </div>
+
+            <span>
+                Contact Management
+            </span>
+
+        </div>
+
+    </div>
+
+</header>
+
+
+
+<!-- =========================================================
+     PAGE
+========================================================= -->
+
+<main class="page">
+
+
+    <!-- HEADER -->
+
+    <div class="header">
+
+        <div>
+
+            <div class="eyebrow">
+
+                <span class="pulse"></span>
+
+                EDITING CONTACT
+
+            </div>
+
+
+            <h1 class="title">
+                Edit Information
+            </h1>
+
+
+            <p class="description">
+                Update the contact details below.
+                Complete the fields and save your changes when you're ready.
+            </p>
+
+        </div>
+
+
+        <!-- PROGRESS -->
+
+        <div class="progress-card">
+
+            <div class="progress-top">
+
+                <span class="progress-label">
+                    Completion
+                </span>
+
+                <span
+                    class="progress-number"
+                    id="progressNumber"
+                >
+                    0%
+                </span>
+
+            </div>
+
+
+            <div class="progress-track">
+
+                <div
+                    class="progress-bar-custom"
+                    id="progressBar"
+                ></div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- =====================================================
+         FORM CARD
+    ===================================================== -->
+
+    <section class="form-card">
+
+
+        <div class="card-header-modern">
+
+            <div class="card-icon">
+                ✦
+            </div>
+
+            <div>
+
+                <h2 class="card-title">
+                    Contact Details
+                </h2>
+
+                <p class="card-subtitle">
+                    Make your changes below
+                </p>
+
+            </div>
+
+        </div>
+
+
+
+        <div class="form-body">
+
+
+            <form method="post">
+
+
+                {% csrf_token %}
+
+
+                <div class="row">
+
+
+                    <!-- NAME -->
+
+                    <div class="col-md-6">
+
+                        <div class="field">
+
+                            <div class="label-row">
+
+                                <label
+                                    for="name-field"
+                                    class="field-label"
+                                >
+                                    Your Name
+                                    <span class="required">*</span>
+                                </label>
+
+                            </div>
+
+
+                            <div class="field-wrap">
+
+                                <input
+                                    type="text"
+                                    name="name"
+                                    id="name-field"
+                                    class="modern-input interactive-field"
+                                    required=""
+                                >
+
+                                <span class="field-icon">
+                                    👤
+                                </span>
+
+                                <span class="valid-icon">
+                                    ✓
+                                </span>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+
+                    <!-- EMAIL -->
+
+                    <div class="col-md-6">
+
+                        <div class="field">
+
+                            <div class="label-row">
+
+                                <label
+                                    for="email-field"
+                                    class="field-label"
+                                >
+                                    Your Email
+                                    <span class="required">*</span>
+                                </label>
+
+                            </div>
+
+
+                            <div class="field-wrap">
+
+                                <input
+                                    type="email"
+                                    class="modern-input interactive-field"
+                                    name="email"
+                                    id="email-field"
+                                    required=""
+                                >
+
+                                <span class="field-icon">
+                                    ✉
+                                </span>
+
+                                <span class="valid-icon">
+                                    ✓
+                                </span>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+
+                    <!-- SUBJECT -->
+
+                    <div class="col-md-12">
+
+                        <div class="field">
+
+                            <div class="label-row">
+
+                                <label
+                                    for="subject-field"
+                                    class="field-label"
+                                >
+                                    Subject
+                                    <span class="required">*</span>
+                                </label>
+
+                            </div>
+
+
+                            <div class="field-wrap">
+
+                                <input
+                                    type="text"
+                                    class="modern-input interactive-field"
+                                    name="subject"
+                                    id="subject-field"
+                                    required=""
+                                >
+
+                                <span class="field-icon">
+                                    #
+                                </span>
+
+                                <span class="valid-icon">
+                                    ✓
+                                </span>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+
+                    <!-- MESSAGE -->
+
+                    <div class="col-md-12">
+
+                        <div class="field">
+
+                            <div class="label-row">
+
+                                <label
+                                    for="message-field"
+                                    class="field-label"
+                                >
+                                    Message
+                                    <span class="required">*</span>
+                                </label>
+
+                            </div>
+
+
+                            <div class="field-wrap">
+
+                                <textarea
+                                    class="modern-input interactive-field"
+                                    name="message"
+                                    rows="10"
+                                    id="message-field"
+                                    required=""
+                                ></textarea>
+
+                                <span
+                                    class="field-icon textarea-icon"
+                                >
+                                    ☰
+                                </span>
+
+                            </div>
+
+
+                            <div class="field-meta">
+
+                                <span>
+                                    Write the message clearly
+                                </span>
+
+                                <span id="characterCount">
+                                    0 characters
+                                </span>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- =================================================
+                     FORM FOOTER
+                ================================================= -->
+
+                <div class="form-bottom">
+
+
+                    <div class="save-note">
+
+                        <div class="save-check">
+                            ✓
+                        </div>
+
+                        <span>
+                            Your information is ready to be updated.
+                        </span>
+
+                    </div>
+
+
+                    <div>
+
+                        <div class="loading">
+                            Loading
+                        </div>
+
+                        <div class="error-message"></div>
+
+                        <div class="sent-message">
+                            Your message has been sent. Thank you!
+                        </div>
+
+
+                        <button
+                            type="submit"
+                            class="update-btn"
+                        >
+                            Update Information
+                        </button>
+
+                    </div>
+
+                </div>
+
+
+            </form>
+
+        </div>
+
+    </section>
+
+
+    <footer class="footer">
+        Contact Management System
+    </footer>
+
+
+</main>
+
+
+
+<!-- =========================================================
+     INTERACTIONS
+========================================================= -->
+
+<script>
+
+    const fields =
+        document.querySelectorAll(".interactive-field");
+
+    const progressBar =
+        document.getElementById("progressBar");
+
+    const progressNumber =
+        document.getElementById("progressNumber");
+
+    const messageField =
+        document.getElementById("message-field");
+
+    const characterCount =
+        document.getElementById("characterCount");
+
+
+    /*
+     * Update completion progress.
+     */
+
+    function updateProgress() {
+
+        let completed = 0;
+
+        fields.forEach(function(field) {
+
+            if (field.value.trim() !== "") {
+
+                completed++;
+
+                field.classList.add("valid");
+
+            } else {
+
+                field.classList.remove("valid");
+
+            }
+
+        });
+
+
+        const percentage =
+            Math.round(
+                (completed / fields.length) * 100
+            );
+
+
+        progressBar.style.width =
+            percentage + "%";
+
+
+        progressNumber.textContent =
+            percentage + "%";
+
+    }
+
+
+    /*
+     * Watch all fields.
+     */
+
+    fields.forEach(function(field) {
+
+        field.addEventListener(
+            "input",
+            updateProgress
+        );
+
+
+        field.addEventListener(
+            "blur",
+            updateProgress
+        );
+
+    });
+
+
+    /*
+     * Message character counter.
+     */
+
+    if (messageField) {
+
+        messageField.addEventListener(
+            "input",
+            function() {
+
+                const count =
+                    this.value.length;
+
+
+                characterCount.textContent =
+                    count +
+                    (count === 1
+                        ? " character"
+                        : " characters");
+
+            }
+        );
+
+    }
+
+
+    /*
+     * Initial state.
+     */
+
+    updateProgress();
+
+</script>
+
+
+</body>
+
+</html>
