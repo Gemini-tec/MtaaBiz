@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Page</title>
+</head>
+<body>
+
+    <h1>All Contacts.</h1>
+    <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Facere odio est, iure laboriosam sunt placeat beatae nam nostrum et itaque excepturi ab dolorem voluptates saepe doloribus neque nisi. Odit, repellendus?
+    Nulla explicabo nam eum totam, porro sunt deleniti quia soluta natus deserunt consectetur nihil quisquam numquam quidem consequuntur dicta. Tempore rem accusantium quibusdam aliquam asperiores beatae cumque quod ipsum autem!</p>
+
+    <table>
+        <tr>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Subject</th>
+            <th>Message</th>
+        </tr>
+
+        {% for contact in all %}
+
+        <tr>
+            <td>{{contact.name}}</td>
+            <td>{{contact.email}}</td>
+            <td>{{contact.subject}}</td>
+            <td>{{contact.message}}</td>
+
+        </tr>
+
+        {% endfor %}
+
+
+    </table>
+    
+</body>
+</html>
