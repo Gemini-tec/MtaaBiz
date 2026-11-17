@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register | Create Account</title>
+
+    {% load static %}
+
+    <link rel="stylesheet" href="{% static 'assets/vendor/bootstrap/css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            min-height: 100vh;
+            font-family: 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #101b35, #1b3156, #37517e);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 30px 15px;
+        }
+
+        .register-wrapper {
+            width: 100%;
+            max-width: 1100px;
+            min-height: 680px;
+            background: #fff;
+            border-radius: 22px;
+            overflow: hidden;
+            display: flex;
+            box-shadow: 0 25px 70px rgba(0, 0, 0, 0.25);
+        }
+
+        /* Branding panel */
+        .register-banner {
+            width: 43%;
+            background:
+                linear-gradient(rgba(13, 29, 57, 0.72),
+                    rgba(13, 29, 57, 0.90)),
+                url("https://images.unsplash.com/photo-1516321318423-f06f85e504b3?q=80&w=1200") center/cover;
+            padding: 50px 45px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            color: white;
+        }
+
+        .banner-logo {
+            font-size: 25px;
+            font-weight: 700;
+            letter-spacing: 1px;
+        }
+
+        .banner-logo i {
+            color: #ffb547;
+            margin-right: 10px;
+        }
+
+        .banner-content h1 {
+            font-size: 38px;
+            font-weight: 700;
+            line-height: 1.3;
+            margin-bottom: 20px;
+        }
+
+        .banner-content p {
+            color: #d5deed;
+            font-size: 15px;
+            line-height: 1.8;
+        }
+
+        .banner-features {
+            margin-top: 30px;
+        }
+
+        .banner-features p {
+            font-size: 14px;
+            color: #d5deed;
+            margin-bottom: 15px;
+        }
+
+        .banner-features i {
+            color: #ffb547;
+            margin-right: 12px;
+        }
+
+        .banner-footer {
+            font-size: 12px;
+            color: #c3cee0;
+        }
+
+        /* Form panel */
+        .register-form-section {
+            width: 57%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 45px 65px;
+        }
+
+        .register-form {
+            width: 100%;
+            max-width: 430px;
+        }
+
+        .form-heading {
+            margin-bottom: 32px;
+        }
+
+        .form-heading h2 {
+            font-size: 30px;
+            font-weight: 700;
+            color: #172b4d;
+            margin-bottom: 10px;
+        }
+
+        .form-heading p {
+            color: #8993a4;
+            font-size: 14px;
+        }
+
+        .form-group {
+            margin-bottom: 21px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 13px;
+            font-weight: 600;
+            color: #344563;
+            margin-bottom: 9px;
+        }
+
+        .input-wrapper {
+            position: relative;
+        }
+
+        .input-wrapper i {
+            position: absolute;
+            left: 17px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #929db0;
+            font-size: 15px;
+        }
+
+        .form-control {
+            height: 53px;
+            border: 1px solid #e1e6ef;
+            border-radius: 10px;
+            padding: 10px 15px 10px 45px;
+            font-size: 14px;
+            background: #f9fafc;
+            transition: all 0.3s ease;
+        }
+
+        .form-control:focus {
+            background: #fff;
+            border-color: #37517e;
+            box-shadow: 0 0 0 4px rgba(55, 81, 126, 0.1);
+        }
+
+        /* Terms checkbox */
+        .terms-wrapper {
+            display: flex;
+            align-items: flex-start;
+            gap: 11px;
+            margin: 27px 0;
+        }
+
+        .terms-wrapper input {
+            width: 17px;
+            height: 17px;
+            margin-top: 3px;
+            accent-color: #37517e;
+            cursor: pointer;
+            flex-shrink: 0;
+        }
+
+        .terms-wrapper label {
+            color: #8993a4;
+            font-size: 13px;
+            line-height: 1.6;
+            cursor: pointer;
+        }
+
+        .terms-wrapper a {
+            color: #37517e;
+            font-weight: 600;
+            text-decoration: none;
+        }
+
+        /* Register button */
+        .register-btn {
+            width: 100%;
+            height: 54px;
+            border: none;
+            border-radius: 10px;
+            background: #37517e;
+            color: white;
+            font-size: 15px;
+            font-weight: 600;
+            letter-spacing: 0.4px;
+            transition: all 0.3s ease;
+        }
+
+        .register-btn:hover {
+            background: #243d68;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(55, 81, 126, 0.2);
+        }
+
+        .login-text {
+            text-align: center;
+            color: #8993a4;
+            font-size: 14px;
+            margin-top: 27px;
+        }
+
+        .login-text a {
+            color: #37517e;
+            font-weight: 700;
+            text-decoration: none;
+        }
+
+        .login-text a:hover,
+        .terms-wrapper a:hover {
+            color: #ff9f32;
+        }
+
+        .form-divider {
+            height: 1px;
+            background: #edf0f5;
+            margin: 25px 0 18px;
+        }
+
+        .legal-links {
+            text-align: center;
+            font-size: 12px;
+        }
+
+        .legal-links a {
+            color: #929db0;
+            text-decoration: none;
+            margin: 0 8px;
+        }
+
+        /* Responsive design */
+        @media (max-width: 768px) {
+            body {
+                padding: 15px;
+            }
+
+            .register-wrapper {
+                max-width: 480px;
+                min-height: auto;
+            }
+
+            .register-banner {
+                display: none;
+            }
+
+            .register-form-section {
+                width: 100%;
+                padding: 40px 27px;
+            }
+
+            .form-heading h2 {
+                font-size: 26px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="register-wrapper">
+
+        <!-- Left Branding Section -->
+        <div class="register-banner">
+
+            <div class="banner-logo">
+                <i class="fas fa-cubes"></i> LOGO
+            </div>
+
+            <div class="banner-content">
+
+                <h1>Create Your Account.</h1>
+
+                <p>
+                    Join us today and get started with a seamless
+                    experience. Create your account in just a few steps.
+                </p>
+
+                <div class="banner-features">
+                    <p>
+                        <i class="fas fa-check-circle"></i>
+                        Simple and easy registration
+                    </p>
+
+                    <p>
+                        <i class="fas fa-shield-alt"></i>
+                        Secure account access
+                    </p>
+
+                    <p>
+                        <i class="fas fa-rocket"></i>
+                        Get started in minutes
+                    </p>
+                </div>
+
+            </div>
+
+            <div class="banner-footer">
+                &copy; 2026 All Rights Reserved.
+            </div>
+
+        </div>
+
+        <!-- Registration Form -->
+        <div class="register-form-section">
+
+            <div class="register-form">
+
+                <div class="form-heading">
+                    <h2>Create Account</h2>
+                    <p>Fill in your details to get started.</p>
+                </div>
+
+                <form method="post">
+                    {% csrf_token %}
+
+                    <!-- Username -->
+                    <div class="form-group">
+
+                        <label for="form3Example1c">Username</label>
+
+                        <div class="input-wrapper">
+                            <i class="fas fa-user"></i>
+
+                            <input type="text" name="username" id="form3Example1c" class="form-control"
+                                placeholder="Choose a username" />
+                        </div>
+
+                    </div>
+
+                    <!-- Password -->
+                    <div class="form-group">
+
+                        <label for="form3Example4c">Password</label>
+
+                        <div class="input-wrapper">
+                            <i class="fas fa-lock"></i>
+
+                            <input type="password" name="password" id="form3Example4c" class="form-control"
+                                placeholder="Create a password" />
+                        </div>
+
+                    </div>
+
+                    <!-- Confirm Password -->
+                    <div class="form-group">
+
+                        <label for="form3Example4cd">Confirm Password</label>
+
+                        <div class="input-wrapper">
+                            <i class="fas fa-key"></i>
+
+                            <input type="password" name="confirm_password" id="form3Example4cd" class="form-control"
+                                placeholder="Repeat your password" />
+                        </div>
+
+                    </div>
+
+                    <!-- Terms and Conditions -->
+                    <div class="terms-wrapper">
+
+                        <input type="checkbox" value="" id="form2Example3c" />
+
+                        <label for="form2Example3c">
+                            I agree to all statements in
+                            <a href="#!">Terms of Service</a>.
+                        </label>
+
+                    </div>
+
+                    <!-- Register Button -->
+                    <button type="submit" class="register-btn">
+                        Create Account
+                        <i class="fas fa-arrow-right ms-2"></i>
+                    </button>
+
+                    <p class="login-text">
+                        Already have an account?
+                        <a href="/login">Sign in</a>
+                    </p>
+
+                    <div class="form-divider"></div>
+
+                    <div class="legal-links">
+                        <a href="#!">Terms of Use</a>
+                        <a href="#!">Privacy Policy</a>
+                    </div>
+
+                </form>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</body>
+
+</html>

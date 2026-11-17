@@ -12,7 +12,7 @@ urlpatterns = [
 
     path('blog/', views.blog, name = 'blog'),
 
-    path('', views.index, name = 'index'),
+    path('index/', views.index, name = 'index'),
 
     path('portfolio/', views.portfolio, name = 'portfolio'),
 
@@ -25,4 +25,8 @@ urlpatterns = [
     path('delete/<int:id>', views.delete ),
 
     path('edit/<int:id>', views.edit ),
+    
+    path('', views.register, name = 'register'),
+    
+    path('login/', views.login_view, name = 'login'),
 ]

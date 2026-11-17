@@ -1,653 +1,626 @@
+
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <title>Contact Page</title>
+    <title>Contacts | Dashboard</title>
 
     {% load static %}
 
-    <link rel="stylesheet"
-          href="{% static 'assets/vendor/bootstrap/css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/vendor/bootstrap/css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
     <style>
-
-        :root {
-            --primary: #4f46e5;
-            --primary-light: #eef2ff;
-            --dark: #111827;
-            --text: #374151;
-            --muted: #6b7280;
-            --border: #e5e7eb;
-            --background: #f6f7fb;
-            --white: #ffffff;
-            --danger: #dc2626;
-            --danger-light: #fef2f2;
-            --warning: #d97706;
-            --warning-light: #fffbeb;
-        }
-
         * {
+            margin: 0;
+            padding: 0;
             box-sizing: border-box;
         }
 
         body {
-            margin: 0;
-            background: var(--background);
-            color: var(--text);
-            font-family:
-                -apple-system,
-                BlinkMacSystemFont,
-                "Segoe UI",
-                Roboto,
-                Helvetica,
-                Arial,
-                sans-serif;
+            font-family: 'Segoe UI', sans-serif;
+            background: #f4f6fa;
+            color: #26354d;
         }
 
-        /* =========================
-           TOP BAR
-        ========================= */
-
-        .topbar {
-            background: var(--white);
-            border-bottom: 1px solid var(--border);
-            padding: 18px 0;
+        /* Sidebar */
+        .sidebar {
+            width: 245px;
+            height: 100vh;
+            background: linear-gradient(180deg, #101b35, #243d68);
+            position: fixed;
+            top: 0;
+            left: 0;
+            padding: 30px 20px;
+            color: white;
+            display: flex;
+            flex-direction: column;
         }
 
         .brand {
+            font-size: 23px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            margin-bottom: 55px;
+            padding-left: 10px;
+        }
+
+        .brand i {
+            color: #ffb547;
+            margin-right: 10px;
+        }
+
+        .sidebar-label {
+            color: #8293b1;
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 1.5px;
+            padding-left: 12px;
+            margin-bottom: 15px;
+        }
+
+        .sidebar-link {
+            display: flex;
+            align-items: center;
+            gap: 13px;
+            color: #c3cee0;
+            text-decoration: none;
+            padding: 13px 14px;
+            border-radius: 9px;
+            font-size: 14px;
+            margin-bottom: 8px;
+            transition: 0.3s;
+        }
+
+        .sidebar-link:hover,
+        .sidebar-link.active {
+            background: rgba(255, 255, 255, 0.12);
+            color: white;
+        }
+
+        .sidebar-link.active {
+            border-left: 3px solid #ffb547;
+        }
+
+        .sidebar-footer {
+            margin-top: auto;
+            padding: 15px 10px;
+            font-size: 12px;
+            color: #a9b7ce;
+            border-top: 1px solid rgba(255,255,255,0.12);
+        }
+
+        /* Main content */
+        .main-content {
+            margin-left: 245px;
+            padding: 35px 40px;
+        }
+
+        .topbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 35px;
+        }
+
+        .page-title h2 {
+            font-size: 26px;
+            font-weight: 700;
+            color: #172b4d;
+            margin-bottom: 7px;
+        }
+
+        .page-title p {
+            color: #8993a4;
+            font-size: 14px;
+            margin: 0;
+        }
+
+        .profile {
             display: flex;
             align-items: center;
             gap: 12px;
-            font-size: 19px;
-            font-weight: 700;
-            color: var(--dark);
+            background: white;
+            padding: 9px 15px;
+            border-radius: 12px;
+            box-shadow: 0 3px 12px rgba(0,0,0,0.04);
         }
 
-        .brand-icon {
-            width: 42px;
-            height: 42px;
-            border-radius: 12px;
-            background: var(--primary);
-            color: white;
+        .profile-icon {
+            width: 38px;
+            height: 38px;
+            background: #e8edf7;
+            color: #37517e;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 19px;
+            border-radius: 50%;
+        }
+
+        .profile span {
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        /* Intro */
+        .welcome-section {
+            margin-bottom: 28px;
+        }
+
+        .welcome-section h3 {
+            font-size: 21px;
             font-weight: 700;
-            box-shadow: 0 6px 16px rgba(79, 70, 229, 0.2);
+            color: #172b4d;
+            margin-bottom: 8px;
         }
 
-        /* =========================
-           PAGE
-        ========================= */
-
-        .page-container {
-            max-width: 1400px;
-            margin: auto;
-            padding: 45px 20px 60px;
+        .welcome-section p {
+            color: #8993a4;
+            font-size: 14px;
+            max-width: 700px;
+            line-height: 1.7;
         }
 
-        .page-header {
+        /* Stats */
+        .stats-card {
+            background: white;
+            border-radius: 14px;
+            padding: 22px;
             display: flex;
-            justify-content: space-between;
-            align-items: flex-end;
-            gap: 25px;
+            align-items: center;
+            gap: 17px;
+            box-shadow: 0 4px 18px rgba(0,0,0,0.035);
             margin-bottom: 30px;
         }
 
-        .page-title {
-            margin: 0;
-            font-size: 36px;
-            font-weight: 750;
-            letter-spacing: -1px;
-            color: var(--dark);
+        .stats-icon {
+            width: 52px;
+            height: 52px;
+            background: #edf2fb;
+            color: #37517e;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 12px;
+            font-size: 20px;
         }
 
-        .page-description {
-            margin: 8px 0 0;
-            max-width: 650px;
-            color: var(--muted);
-            font-size: 15px;
-            line-height: 1.6;
-        }
-
-        /* =========================
-           MESSAGE COUNT
-        ========================= */
-
-        .message-count {
-            background: var(--white);
-            border: 1px solid var(--border);
-            border-radius: 14px;
-            padding: 15px 20px;
-            min-width: 150px;
-            box-shadow: 0 5px 20px rgba(15, 23, 42, 0.04);
-        }
-
-        .message-count small {
-            display: block;
-            color: var(--muted);
-            font-size: 12px;
+        .stats-card h4 {
+            font-size: 23px;
+            font-weight: 700;
+            color: #172b4d;
             margin-bottom: 3px;
         }
 
-        .message-count strong {
-            font-size: 25px;
-            color: var(--dark);
+        .stats-card p {
+            color: #8993a4;
+            font-size: 13px;
+            margin: 0;
         }
 
-        /* =========================
-           CONTENT CARD
-        ========================= */
-
-        .contacts-card {
-            background: var(--white);
-            border: 1px solid var(--border);
-            border-radius: 18px;
-            overflow: hidden;
-            box-shadow: 0 8px 30px rgba(15, 23, 42, 0.05);
+        /* Table container */
+        .table-card {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.035);
         }
 
-        .card-header-custom {
-            padding: 22px 25px;
-            border-bottom: 1px solid var(--border);
+        .table-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-bottom: 25px;
         }
 
-        .card-title {
-            margin: 0;
+        .table-header h4 {
             font-size: 18px;
             font-weight: 700;
-            color: var(--dark);
-        }
-
-        .card-subtitle {
-            margin: 4px 0 0;
-            color: var(--muted);
-            font-size: 13px;
-        }
-
-        /* =========================
-           TABLE
-        ========================= */
-
-        .table-container {
-            overflow-x: auto;
-        }
-
-        .contacts-table {
-            width: 100%;
-            min-width: 900px;
+            color: #172b4d;
             margin: 0;
-            border-collapse: collapse;
         }
 
-        .contacts-table thead th {
-            padding: 15px 20px;
-            background: #f9fafb;
-            border-bottom: 1px solid var(--border);
-            color: #6b7280;
+        .search-box {
+            position: relative;
+            width: 260px;
+        }
+
+        .search-box i {
+            position: absolute;
+            left: 13px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #929db0;
+        }
+
+        .search-box input {
+            width: 100%;
+            height: 42px;
+            border: 1px solid #e1e6ef;
+            border-radius: 8px;
+            padding: 8px 12px 8px 38px;
+            font-size: 13px;
+            outline: none;
+            background: #fafbfd;
+        }
+
+        .search-box input:focus {
+            border-color: #37517e;
+        }
+
+        .table-responsive {
+            border-radius: 9px;
+        }
+
+        .table {
+            margin-bottom: 0;
+            vertical-align: middle;
+            min-width: 750px;
+        }
+
+        .table thead th {
+            background: #f4f6fa;
+            color: #718096;
             font-size: 12px;
             font-weight: 700;
             text-transform: uppercase;
-            letter-spacing: 0.5px;
+            letter-spacing: 0.6px;
+            padding: 17px 15px;
+            border-bottom: 1px solid #e9edf3;
             white-space: nowrap;
         }
 
-        .contacts-table tbody td {
-            padding: 18px 20px;
-            border-bottom: 1px solid #f0f1f3;
-            vertical-align: middle;
-            font-size: 14px;
+        .table tbody td {
+            padding: 17px 15px;
+            font-size: 13px;
+            color: #526078;
+            border-bottom: 1px solid #edf0f5;
         }
 
-        .contacts-table tbody tr {
-            transition: 0.2s ease;
-        }
-
-        .contacts-table tbody tr:hover {
-            background: #fafbff;
-        }
-
-        .contacts-table tbody tr:last-child td {
-            border-bottom: none;
-        }
-
-        /* =========================
-           NAME
-        ========================= */
-
-        .name-wrapper {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            min-width: 180px;
-        }
-
-        .avatar {
-            width: 40px;
-            height: 40px;
-            flex-shrink: 0;
-            border-radius: 50%;
-            background: var(--primary-light);
-            color: var(--primary);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 700;
+        .table tbody tr:hover {
+            background: #fafbfd;
         }
 
         .contact-name {
-            font-weight: 650;
-            color: var(--dark);
-        }
-
-        /* =========================
-           EMAIL
-        ========================= */
-
-        .email {
-            color: #4b5563;
-            white-space: nowrap;
-        }
-
-        /* =========================
-           SUBJECT
-        ========================= */
-
-        .subject {
-            display: inline-block;
-            padding: 6px 10px;
-            border-radius: 7px;
-            background: #f3f4f6;
-            color: #374151;
-            font-size: 12px;
             font-weight: 600;
-            max-width: 190px;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
+            color: #26354d !important;
         }
 
-        /* =========================
-           MESSAGE
-        ========================= */
-
-        .message {
-            max-width: 380px;
-            color: var(--muted);
-            line-height: 1.5;
-
-            display: -webkit-box;
-            -webkit-line-clamp: 2;
-            -webkit-box-orient: vertical;
-            overflow: hidden;
+        .contact-message {
+            max-width: 250px;
+            white-space: normal;
+            line-height: 1.6;
         }
 
-        /* =========================
-           ACTIONS
-        ========================= */
-
+        /* Action buttons */
         .action-buttons {
             display: flex;
             gap: 8px;
-            justify-content: flex-end;
         }
 
-        .action-btn {
-            border-radius: 9px;
-            padding: 8px 13px;
-            font-size: 13px;
+        .btn-edit,
+        .btn-delete {
+            border: none;
+            padding: 8px 12px;
+            border-radius: 7px;
+            font-size: 12px;
             font-weight: 600;
             text-decoration: none;
-            transition: all 0.2s ease;
-            border: 1px solid transparent;
             display: inline-flex;
             align-items: center;
             gap: 6px;
+            transition: 0.3s;
+            white-space: nowrap;
         }
 
-        .edit-btn {
-            background: var(--warning-light);
-            color: var(--warning);
-            border-color: #fde68a;
+        .btn-edit {
+            background: #edf2fb;
+            color: #37517e;
         }
 
-        .edit-btn:hover {
-            background: #fef3c7;
-            color: #b45309;
-            transform: translateY(-1px);
+        .btn-edit:hover {
+            background: #37517e;
+            color: white;
         }
 
-        .delete-btn {
-            background: var(--danger-light);
-            color: var(--danger);
-            border-color: #fecaca;
+        .btn-delete {
+            background: #fff0f0;
+            color: #dc3545;
         }
 
-        .delete-btn:hover {
-            background: #fee2e2;
-            color: #b91c1c;
-            transform: translateY(-1px);
+        .btn-delete:hover {
+            background: #dc3545;
+            color: white;
         }
-
-        /* =========================
-           EMPTY STATE
-        ========================= */
 
         .empty-state {
-            padding: 70px 20px;
             text-align: center;
+            padding: 50px 20px !important;
+            color: #8993a4 !important;
         }
 
-        .empty-icon {
-            width: 65px;
-            height: 65px;
-            margin: 0 auto 18px;
-            border-radius: 16px;
-            background: #f3f4f6;
-            color: #9ca3af;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 27px;
+        .empty-state i {
+            display: block;
+            font-size: 35px;
+            color: #c6cfdd;
+            margin-bottom: 15px;
         }
 
-        .empty-state h3 {
-            margin-bottom: 7px;
-            font-size: 18px;
-            color: var(--dark);
-        }
-
-        .empty-state p {
-            margin: 0;
-            color: var(--muted);
-            font-size: 14px;
-        }
-
-        /* =========================
-           FOOTER
-        ========================= */
-
-        .footer {
+        /* Footer */
+        .main-footer {
             text-align: center;
-            padding-top: 30px;
-            color: #9ca3af;
-            font-size: 13px;
+            color: #a0a9b8;
+            font-size: 12px;
+            padding: 30px 0 10px;
         }
 
-        /* =========================
-           MOBILE
-        ========================= */
-
-        @media (max-width: 768px) {
-
-            .page-container {
-                padding: 30px 15px 45px;
+        /* Responsive */
+        @media (max-width: 992px) {
+            .sidebar {
+                width: 75px;
+                padding: 25px 12px;
             }
 
-            .page-header {
-                flex-direction: column;
-                align-items: stretch;
+            .brand {
+                font-size: 0;
+                padding: 0;
+                text-align: center;
+                margin-bottom: 45px;
             }
 
-            .page-title {
-                font-size: 29px;
+            .brand i {
+                font-size: 24px;
+                margin: 0;
             }
 
-            .message-count {
+            .sidebar-label,
+            .sidebar-link span,
+            .sidebar-footer {
+                display: none;
+            }
+
+            .sidebar-link {
+                justify-content: center;
+                padding: 14px 5px;
+            }
+
+            .sidebar-link i {
+                font-size: 18px;
+            }
+
+            .main-content {
+                margin-left: 75px;
+                padding: 30px 22px;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .main-content {
+                padding: 25px 14px;
+            }
+
+            .topbar {
+                align-items: flex-start;
+            }
+
+            .page-title h2 {
+                font-size: 21px;
+            }
+
+            .profile span {
+                display: none;
+            }
+
+            .table-card {
+                padding: 17px 12px;
+            }
+
+            .search-box {
                 width: 100%;
             }
 
-            .card-header-custom {
-                padding: 18px;
-            }
-
-            .contacts-table thead th,
-            .contacts-table tbody td {
-                padding-left: 15px;
-                padding-right: 15px;
+            .welcome-section h3 {
+                font-size: 19px;
             }
         }
-
     </style>
+
 </head>
 
 <body>
 
-<!-- TOP BAR -->
-
-<div class="topbar">
-
-    <div class="container-fluid px-4">
+    <!-- Sidebar -->
+    <aside class="sidebar">
 
         <div class="brand">
+            <i class="fas fa-cubes"></i> LOGO
+        </div>
 
-            <div class="brand-icon">
-                ✉
+        <p class="sidebar-label">MAIN MENU</p>
+
+        <a href="#" class="sidebar-link">
+            <i class="fas fa-chart-line"></i>
+            <span>Dashboard</span>
+        </a>
+
+        <a href="#" class="sidebar-link active">
+            <i class="fas fa-address-book"></i>
+            <span>All Contacts</span>
+        </a>
+
+        <a href="#" class="sidebar-link">
+            <i class="fas fa-user-plus"></i>
+            <span>Add Contact</span>
+        </a>
+
+        <div class="sidebar-footer">
+            &copy; 2026 All Rights Reserved.
+        </div>
+
+    </aside>
+
+
+    <!-- Main Content -->
+    <main class="main-content">
+
+        <!-- Topbar -->
+        <div class="topbar">
+
+            <div class="page-title">
+                <h2>Contact Management</h2>
+                <p>Manage and organize all your contacts in one place.</p>
             </div>
 
-            <span>Contact Management</span>
-
-        </div>
-
-    </div>
-
-</div>
-
-
-<!-- MAIN CONTENT -->
-
-<div class="page-container">
-
-    <!-- PAGE HEADER -->
-
-    <div class="page-header">
-
-        <div>
-
-            <h1 class="page-title">
-                All Contacts
-            </h1>
-
-            <p class="page-description">
-                View and manage all messages submitted through your contact form.
-            </p>
-
-        </div>
-
-        <div class="message-count">
-
-            <small>Total Messages</small>
-
-            <strong>
-                {{ all|length }}
-            </strong>
-
-        </div>
-
-    </div>
-
-
-    <!-- CONTACTS CARD -->
-
-    <div class="contacts-card">
-
-        <div class="card-header-custom">
-
-            <div>
-
-                <h2 class="card-title">
-                    Contact Messages
-                </h2>
-
-                <p class="card-subtitle">
-                    All submitted contact information is displayed below.
-                </p>
-
+            <div class="profile">
+                <div class="profile-icon">
+                    <i class="fas fa-user"></i>
+                </div>
+                <span>Administrator</span>
             </div>
 
         </div>
 
 
-        {% if all %}
-
-        <div class="table-container">
-
-            <table class="contacts-table">
-
-                <thead>
-
-                    <tr>
-
-                        <th>Name</th>
-
-                        <th>Email</th>
-
-                        <th>Subject</th>
-
-                        <th>Message</th>
-
-                        <th class="text-end">Actions</th>
-
-                    </tr>
-
-                </thead>
-
-
-                <tbody>
-
-                    {% for contact in all %}
-
-                    <tr>
-
-                        <!-- NAME -->
-
-                        <td>
-
-                            <div class="name-wrapper">
-
-                                <div class="avatar">
-                                    {{ contact.name|first|upper }}
-                                </div>
-
-                                <div class="contact-name">
-                                    {{ contact.name }}
-                                </div>
-
-                            </div>
-
-                        </td>
-
-
-                        <!-- EMAIL -->
-
-                        <td>
-
-                            <span class="email">
-                                {{ contact.email }}
-                            </span>
-
-                        </td>
-
-
-                        <!-- SUBJECT -->
-
-                        <td>
-
-                            <span class="subject">
-                                {{ contact.subject }}
-                            </span>
-
-                        </td>
-
-
-                        <!-- MESSAGE -->
-
-                        <td>
-
-                            <div class="message">
-                                {{ contact.message }}
-                            </div>
-
-                        </td>
-
-
-                        <!-- ACTIONS -->
-
-                        <td>
-
-                            <div class="action-buttons">
-
-                                <a
-                                    href="/edit/{{contact.id}}"
-                                    class="action-btn edit-btn"
-                                >
-                                    Edit
-                                </a>
-
-                                <a
-                                    href="/delete/{{contact.id}}"
-                                    class="action-btn delete-btn"
-                                >
-                                    Delete
-                                </a>
-
-                            </div>
-
-                        </td>
-
-                    </tr>
-
-                    {% endfor %}
-
-                </tbody>
-
-            </table>
-
-        </div>
-
-        {% else %}
-
-        <!-- EMPTY STATE -->
-
-        <div class="empty-state">
-
-            <div class="empty-icon">
-                ✉
-            </div>
-
-            <h3>
-                No contacts yet
-            </h3>
+        <!-- Welcome -->
+        <div class="welcome-section">
+            <h3>All Contacts.</h3>
 
             <p>
-                Contact form submissions will appear here.
+                Here you can view, manage and keep track of all submitted
+                contact information. Stay organized and keep every
+                conversation within reach.
             </p>
+        </div>
+
+
+        <!-- Statistics -->
+        <div class="row">
+
+            <div class="col-md-5 col-lg-4">
+
+                <div class="stats-card">
+
+                    <div class="stats-icon">
+                        <i class="fas fa-address-book"></i>
+                    </div>
+
+                    <div>
+                        <h4>{{ all|length }}</h4>
+                        <p>Total Contacts</p>
+                    </div>
+
+                </div>
+
+            </div>
 
         </div>
 
-        {% endif %}
 
-    </div>
+        <!-- Contacts Table -->
+        <div class="table-card">
+
+            <div class="table-header">
+
+                <h4>
+                    <i class="fas fa-list-ul me-2"
+                       style="color:#37517e;"></i>
+                    Contact Directory
+                </h4>
+
+                <div class="search-box">
+                    <i class="fas fa-search"></i>
+                    <input type="text" placeholder="Search contacts...">
+                </div>
+
+            </div>
 
 
-    <!-- FOOTER -->
+            <div class="table-responsive">
 
-    <div class="footer">
+                <table class="table">
 
-        © {% now "Y" %} Contact Management System
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Subject</th>
+                            <th>Message</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
 
-    </div>
+                    <tbody>
 
-</div>
+                        {% for contact in all %}
+
+                        <tr>
+
+                            <td class="contact-name">
+                                {{ contact.name }}
+                            </td>
+
+                            <td>
+                                {{ contact.email }}
+                            </td>
+
+                            <td>
+                                {{ contact.subject }}
+                            </td>
+
+                            <td class="contact-message">
+                                {{ contact.message }}
+                            </td>
+
+                            <td>
+                                <div class="action-buttons">
+
+                                    <a href="/edit/{{ contact.id }}"
+                                       class="btn-edit">
+                                        <i class="fas fa-pen"></i>
+                                        Edit
+                                    </a>
+
+                                    <a href="/delete/{{ contact.id }}"
+                                       class="btn-delete">
+                                        <i class="fas fa-trash"></i>
+                                        Delete
+                                    </a>
+
+                                </div>
+                            </td>
+
+                        </tr>
+
+                        {% empty %}
+
+                        <tr>
+                            <td colspan="5" class="empty-state">
+                                <i class="fas fa-address-book"></i>
+                                No contacts available yet.
+                            </td>
+                        </tr>
+
+                        {% endfor %}
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
 
 
-<script src="{% static 'assets/vendor/bootstrap/js/bootstrap.min.js' %}"></script>
+        <!-- Footer -->
+        <div class="main-footer">
+            &copy; 2026 Contact Management System. All rights reserved.
+        </div>
+
+    </main>
 
 </body>
 </html>
